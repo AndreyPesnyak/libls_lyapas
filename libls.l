@@ -82,6 +82,8 @@ set_sockaddr_ip(F1,F2/)
 	{mov esi,[ebp+220]}
 	{add esi,4}
 	{mov [esi],edi}
+	{mov al,8}
+	{mov [ebp+1020],al}
 	**
 socket(d,t,p/s)
 	@+F1(12)
