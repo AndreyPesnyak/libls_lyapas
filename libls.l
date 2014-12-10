@@ -1,9 +1,11 @@
 main(/)
 	Ox Oq Oy Or Od Ot Op
 	@+F1(16) @+F2(16)
-	@'020004ABC0A8002C'>F1
-	*char_to_number(F1/F1)
+	@'192.168.0.44'>F2
 	0⇒d 1⇒t 2⇒p
+	*set_sockaddr_domain(F1,2/)
+	*set_sockaddr_port(F1,1195/)
+	*set_sockaddr_ip(F1,F2/)
 	*socket(d,t,p/x)
 	*connect(x,F1,10h/r)
 	*freadf(x,F2,0,5/a)
@@ -36,6 +38,50 @@ char_to_number(F1/F1)
  	{next_iteration:inc esi}
 	{loop conv}
 	{shr [ebp+1020],1}
+	**
+set_sockaddr_domain(F1,d/)
+	{mov edi,[ebp+220]}
+	{mov eax,[ebp+16]}
+	{mov [edi],ax}
+	{mov al,2}
+	{mov [ebp+1020],al}
+	**
+set_sockaddr_port(F1,p/)
+	{mov edi,[ebp+220]}
+	{add edi,2}
+	{mov eax,[ebp+64]}
+	{ror ax,8}
+	{mov [edi],ax}
+	{mov al,4}
+	{mov [ebp+1020],al}
+	**
+set_sockaddr_ip(F1,F2/)
+	{xor edi,edi}
+	{xor eax,eax}
+	{mov ebx,10}
+	{mov esi,[ebp+224]}
+	{mov ecx,[ebp+1024]}
+	{cycle:mov dl,byte[esi]}
+	{cmp dl,46}
+	{jne next_byte}
+	{or edi,eax}
+	{shl edi,8}
+	{xor eax,eax}
+	{dec ecx}
+	{inc esi}
+	{mov dl,byte[esi]}
+	{next_byte:mul bl}
+	{sub dl,0x30}
+	{add al,dl}
+	{inc esi}
+	{loop cycle}
+	{or edi,eax}
+	{ror di,8}
+	{ror edi,16}
+	{ror di,8}
+	{mov esi,[ebp+220]}
+	{add esi,4}
+	{mov [esi],edi}
 	**
 socket(d,t,p/s)
 	@+F1(12)
