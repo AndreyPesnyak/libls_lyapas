@@ -1,6 +1,6 @@
 main(/)
 	Ox Oq Oy Or Od Ot Op
-	@+F1(16) @+F2(16) @+F3(5)
+	@+F1(16) @+F2(16) @+F3(5) @+F4(5)
 	@'192.168.0.44'>F2
 	@'echo\n'>F3
 	0⇒d 1⇒t 2⇒p
@@ -10,8 +10,8 @@ main(/)
 	*socket(d,t,p/x)
 	*connect(x,F1,10h/r)
 	*fwritef(x,F3,0,5/a)
-	*freadf(x,F3,0,5/a)
-	/F3>C
+	*freadf(x,F4,0,5/a)
+	/F4>C
 	*close(x/)
 	**
 ************************************
