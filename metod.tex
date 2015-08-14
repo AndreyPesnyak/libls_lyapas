@@ -1,0 +1,204 @@
+\documentclass[12t]{article}
+
+\usepackage [utf8x] {inputenc}
+\usepackage [T2A] {fontenc}
+\usepackage {xcolor}
+\usepackage {hyperref}
+\usepackage {float}
+\usepackage [usenames]{color}
+\usepackage {longtable}
+\usepackage [english,russianb]{babel}
+\definecolor{color1}{HTML}{007FFF}
+\hypersetup{pdfstartview=FitH, linkcolor=color1, colorlinks=true}
+\begin{document}
+
+\textcolor[rgb]{1,0,0}{server.l}
+
+Os Oe Oc Od Ot Op ; обнуление переменных
+
+@+F1(16) @+F2(16) @+F3(16) ; 1 комлпекс - для настроек сервера, 2 - для настроек клиента, 3 - для обмена сообщением
+
+@'0.0.0.0'>F2
+
+2⇒d 1⇒t 0⇒p ; domain=AF\_INET type=SOCK\_STREAM protocol=auto
+
+\hyperref [sockaddr] {*set\_sockaddr\_bind\_domain(F1,2/)} ;настройка сервера domain=AF\_INET 
+
+\hyperref [sockaddr] {*set\_sockaddr\_bind\_port(F1,1195/)} ;настройка сервера port=1195
+
+\hyperref [sockaddr] {*set\_sockaddr\_bind\_ip(F1,F2/)} ;настройка сервера IP=любой
+
+\hyperref [socket] {*socket(d,t,p/s)}
+
+\hyperref [bind] {*bind(s,F1,10h/e)} ;привязываем сокет s к комплексу F1 длины 16 байт
+
+\hyperref [listen] {*listen(s,5/e)} ;ожидаем не более 5 соединений на сокете s
+
+\hyperref [accept] {*accept(s,F2,10h/c)} ;устанавливаем связь на сокете s
+
+*freadf(c,F3,0,5/a) ;считываем 5 символов с клиентского сокета в комплекс F3
+
+*fwritef(c,F3,0,5/a) ;записываем 5 символов в клиентский сокет из комплекса F3
+
+*close(c/) ;закрываем сокет клиента
+
+*close(s/) ;закрываем сокет сервера
+
+**
+~\\
+~\\
+\label{socket}
+*socket(\hyperref[domain]{domain}, \hyperref[type]{type}, \hyperref[protocol]{protocol}/socket) - эта функция используется для создания сокета. Первый параметр - домен - накладывает определенные ограничения на формат используемых процессов адресов и их интерпретацию. Второй параметр определяет тип канала связи с сокетом, который должен быть использован. Третий параметр позволяет выбрать нужный протокол для канала связи; если он равен 0, то ОС выбирает его автоматически. Функция возвращает целое положительное число - номер дискриптора.
+
+\begin{table}[H]
+\caption{\label{domain}Значения domain}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+domain & значение \\
+\hline
+AF\_UNIX, AF\_LOCAL & 1 \\
+AF\_INET & 2 \\
+AF\_INET6 & 10 \\
+AF\_IPX & 4 \\
+AF\_NETLINK & 16 \\
+AF\_X25 & 9 \\
+AF\_AX25 & 3 \\
+AF\_ATMPVC & 8 \\
+AF\_APPLETALK & 5 \\
+AF\_PACKET & 17 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[ht]
+\caption{\label{type}Значения type}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+type & значение \\
+\hline
+SOCK\_STREAM & 1 \\
+SOCK\_DGRAM & 2 \\
+SOCK\_SEQPACKET & 5 \\
+SOCK\_RAW & 3 \\
+SOCK\_RDM & 4 \\
+SOCK\_PACKET & 10 \\
+SOCK\_NONBLOCK & 2048 \\
+SOCK\_CLOEXEC & 524288 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}[H]
+\caption{\label{protocol}Значения protocol}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+protocol & значения \\
+\hline
+IPPROTO\_IP & 0 \\
+IPPROTO\_HOPOPTS & 0 \\
+IPPROTO\_ICMP & 1 \\
+IPPROTO\_IGMP & 2 \\
+IPPROTO\_IPIP & 4 \\
+IPPROTO\_TCP & 6 \\
+IPPROTO\_EGP & 8 \\
+IPPROTO\_PUP & 12 \\
+IPPROTO\_UDP & 17 \\
+IPPROTO\_IDP & 22 \\
+IPPROTO\_TP & 29 \\
+IPPROTO\_DCCP & 33 \\
+IPPROTO\_IPV6 & 41 \\
+IPPROTO\_ROUTING & 43 \\
+IPPROTO\_FRAGMENT & 44 \\
+IPPROTO\_RSVP & 46 \\
+IPPROTO\_GRE & 47 \\
+IPPROTO\_ESP & 50 \\
+IPPROTO\_AH & 51 \\
+IPPROTO\_ICMPV6 & 58 \\
+IPPROTO\_NONE & 59 \\
+IPPROTO\_DSTOPTS & 60 \\
+IPPROTO\_MTP & 92 \\
+IPPROTO\_ENCAP & 98 \\
+IPPROTO\_PIM & 103 \\
+IPPROTO\_COMP & 108 \\
+IPPROTO\_SCTP & 132 \\
+IPPROTO\_UDPLITE & 136 \\
+IPPROTO\_RAW & 255 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\phantomsection
+\label{bind}
+*bind(socket,\hyperref[sockaddr]{sockaddr}, sockaddr\_len/\hyperref[error]{error}) - используется сервером для присваивания сокету имени. До выполнения этой функции сокет недоступен программам-клиентам. Первый аргумент - сокет-дескриптор, который данная функция именует. Второй параметр - указатель на комплекс, описывающий sockaddr. Третий параметр - длина комплекса. В случае успешного выполнения функция возвращает значение равное 0, иначе - код ошибки.
+
+\begin{table}[H]
+\caption{\label{sockaddr}Комплекс sockaddr}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+биты & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+\hline
+значение & \multicolumn{2}{|c|}{domain} & \multicolumn{2}{|c|}{port} & \multicolumn{4}{|c|}{IP address} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\phantomsection
+\label{listen}
+*listen(socket, backlog/\hyperref[error]{error}) - используется сервером, чтобы уведомить ОС, что он ожидает запросы на установление соединения на данном сокете. Первый аргумент - сокет для прослушивания, второй аргумент - целое положительное число, определяющее как много запросов может быть принято на сокет. В случае успешного выполнения функция возвращает значение равное 0, иначе - код ошибки.
+
+\phantomsection
+\label{accept}
+*accept(socket,sockaddr,sockaddr\_len/\hyperref[error]{error}) - используется сервером для принятия связи на сокет. Сокет должен быть уже слушающим в момент вызова функции. Если сервер устанавливает связь с клиентом, то функция accept возвращает новый сокет-дескриптор, через который и происходит общение клиента с сервером. Пока устанавливается связь клиента с сервером, функция accept блокирует другие запросы связи с данным сервером, а после установления связи "прослушивание" запросов возобновляется. Первый аргумент функции - сокет-дескриптор для принятия связей от клиентов. Второй аргумент - комплекс sockaddr для соответствующего домена. Третий аргумент - длина комплекса sockaddr. Второй и третий аргументы заполняются соответствующими значениями в момент установления связи клиента с сервером и позволяют серверу точно определить, с каким именно клиентом он общается.
+
+\begin{center}
+\begin{longtable}{|c|c|}
+\caption{\label{error}Значения error}
+\hline
+Значение & Обозначение ошибки \\
+\hline
+1 & операция не разрешена \\
+2 & файл или директория не существует \\
+3 & процесс не существует \\
+4 & прерывание системы \\
+5 & ошибка ввода/вывода \\
+6 & устройство или адрес не существует \\
+7 & аргументов слишком много \\
+8 & ошибка формата исполняемого файла \\
+\hline
+9 & некорректный номер дескриптора \\
+10 & дочернего процесса не существует \\
+11 & перезапустите процесс \\
+12 & ошибка памяти \\
+13 & доступ запрещен \\
+14 & некорректный адрес \\
+15 & требуется блочное устройство \\
+16 & устройство или ресурс занято\\
+17 & файл существует\\
+18 & нельзя создавать жесткие ссылки между устройствами\\
+19 & устройство не существует\\
+20 & не является директорией\\ 
+21 & является директорией\\
+22 & неверный аргумент \\
+23 & переполнение таблицы дескрипторов \\
+24 & много открытых файлов \\
+25 & не является пишущим устройством\\
+26 & текстовый файл занят\\
+27 & файл слишком большой \\
+28 & на устройстве не хватает свободного места \\
+29 & запрещено передвижение указателя на файл\\
+30 & доступны только права на чтение\\
+31 & слишком много ссылок\\
+32 & ошибка ввода данных\\
+33 & результат математической операции нельзя представить\\
+\hline
+\end{longtable}
+\end{center}
+\end{document}
