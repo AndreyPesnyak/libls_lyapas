@@ -1,7 +1,7 @@
 main(/)
 	Ox Oq Oy Or Od Ot Op
 	@+F1(16) @+F2(16) @+F3(5) @+F4(5)
-	@'192.168.0.44'>F2
+	@'192.168.0.68'>F2
 	@'echo\n'>F3
 	0⇒d 1⇒t 2⇒p
 	*set_sockaddr_connect_domain(F1,2/)
@@ -11,7 +11,7 @@ main(/)
 	*connect(x,F1,10h/r)
 	*fwritef(x,F3,0,5/a)
 	*freadf(x,F4,0,5/a)
-	/F4>C
+	*fwritef(1,F4,0,5/a)
 	*close(x/)
 	**
 ************************************
@@ -180,4 +180,5 @@ freadf(n,F1,b,l/k)
 	{mov edx,[ebp+48]}
 	{int 80h}
 	{mov [ebp+44],eax}
+	{mov [ebp+1020],eax}
 	**
