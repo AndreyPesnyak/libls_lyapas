@@ -4,9 +4,9 @@ main(/)
 	@'192.168.203.1'>F2
 	@'echo\n'>F3
 	2⇒d 1⇒t 0⇒p
-	*set_sockaddr_connect_domain(F1,2/)
-	*set_sockaddr_connect_port(F1,1195/)
-	*set_sockaddr_connect_ip(F1,F2/)
+	*set_sockaddr_domain(F1,2/)
+	*set_sockaddr_port(F1,1195/)
+	*set_sockaddr_ip(F1,F2/)
 	*socket(d,t,p/x)
 	*connect(x,F1,10h/e)
 	*fwritef(x,F3,0,5/a)
@@ -17,14 +17,14 @@ main(/)
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
 ************************************
-set_sockaddr_connect_domain(F1,d/)
+set_sockaddr_domain(F1,d/)
 	{mov edi,[ebp+220]}
 	{mov eax,[ebp+16]}
 	{mov [edi],ax}
 	{mov al,2}
 	{mov [ebp+1020],al}
 	**
-set_sockaddr_connect_port(F1,p/)
+set_sockaddr_port(F1,p/)
 	{mov edi,[ebp+220]}
 	{add edi,2}
 	{mov eax,[ebp+64]}
@@ -33,7 +33,7 @@ set_sockaddr_connect_port(F1,p/)
 	{mov al,4}
 	{mov [ebp+1020],al}
 	**
-set_sockaddr_connect_ip(F1,F2/)
+set_sockaddr_ip(F1,F2/)
 	{xor edi,edi}
 	{xor eax,eax}
 	{mov ebx,10}

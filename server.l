@@ -3,9 +3,9 @@ main(/)
 	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
 	@'0.0.0.0'>F2
 	2⇒d 1⇒t 0⇒p
-	*set_sockaddr_bind_domain(F1,2/)
-	*set_sockaddr_bind_port(F1,1195/)
-	*set_sockaddr_bind_ip(F1,F2/)
+	*set_sockaddr_domain(F1,2/)
+	*set_sockaddr_port(F1,1195/)
+	*set_sockaddr_ip(F1,F2/)
 	*socket(d,t,p/s)
 	*bind(s,F1,10h/e)
 	*listen(s,100/e)
@@ -19,14 +19,14 @@ main(/)
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
 ************************************
-set_sockaddr_bind_domain(F1,p/)
+set_sockaddr_domain(F1,d/)
 	{mov edi,[ebp+220]}
-	{mov eax,[ebp+64]}
+	{mov eax,[ebp+16]}
 	{mov [edi],ax}
 	{mov al,2}
 	{mov [ebp+1020],al}
 	**
-set_sockaddr_bind_port(F1,p/)
+set_sockaddr_port(F1,p/)
 	{mov edi,[ebp+220]}
 	{add edi,2}
 	{mov eax,[ebp+64]}
@@ -35,7 +35,7 @@ set_sockaddr_bind_port(F1,p/)
 	{mov al,4}
 	{mov [ebp+1020],al}
 	**
-set_sockaddr_bind_ip(F1,F2/)
+set_sockaddr_ip(F1,F2/)
 	{xor edi,edi}
 	{xor eax,eax}
 	{mov ebx,10}
