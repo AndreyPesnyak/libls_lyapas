@@ -1,51 +1,29 @@
-\documentclass[12t]{article}
+\documentclass[12t,english,russian]{article}
 
 \usepackage [utf8x] {inputenc}
 \usepackage [T2A] {fontenc}
+\usepackage {geometry}
 \usepackage {xcolor}
 \usepackage {hyperref}
 \usepackage {float}
 \usepackage {longtable}
 \usepackage [english,russianb]{babel}
+\geometry {top=2cm,bottom=2cm,left=2cm,right=2cm}
 \definecolor{color1}{HTML}{007FFF}
 \hypersetup{pdfstartview=FitH, linkcolor=color1, colorlinks=true}
+\parindent=1cm
+
 \begin{document}
+\huge
+\begin{center}
+{Сетевое взаимодействие на языке Ляпас}
+\end{center}
+\Large
+\tableofcontents
+\newpage
 
-\textcolor[rgb]{1,0,0}{server.l}
-
-Os Oe Oc Od Ot Op ; обнуление переменных
-
-@+F1(16) @+F2(16) @+F3(16) ; 1 комлпекс - для настроек сервера, 2 - для настроек клиента, 3 - для обмена сообщением
-
-@'0.0.0.0'>F2
-
-2⇒d 1⇒t 0⇒p ; domain=AF\_INET type=SOCK\_STREAM protocol=auto
-
-\hyperref [set_sockaddr_domain] {*set\_sockaddr\_domain(F1,2/)} ;настройка сервера domain=AF\_INET 
-
-\hyperref [set_sockaddr_port] {*set\_sockaddr\_port(F1,1195/)} ;настройка сервера port=1195
-
-\hyperref [set_sockaddr_ip] {*set\_sockaddr\_ip(F1,F2/)} ;настройка сервера IP=любой
-
-\hyperref [socket] {*socket(d,t,p/s)}
-
-\hyperref [bind] {*bind(s,F1,10h/e)} ;привязываем сокет s к комплексу F1 длины 16 байт
-
-\hyperref [listen] {*listen(s,5/e)} ;ожидаем не более 5 соединений на сокете s
-
-\hyperref [accept] {*accept(s,F2,10h/c)} ;устанавливаем связь на сокете s
-
-*freadf(c,F3,0,5/a) ;считываем 5 символов с клиентского сокета в комплекс F3
-
-*fwritef(c,F3,0,5/a) ;записываем 5 символов в клиентский сокет из комплекса F3
-
-*close(c/) ;закрываем сокет клиента
-
-*close(s/) ;закрываем сокет сервера
-
-**
-~\\
-~\\
+\large
+\section[Описание функций]{Описание функций}
 \phantomsection
 \label{socket}
 socket(\hyperref[domain]{domain}, \hyperref[type]{type}, \hyperref[protocol]{protocol}/socket) - эта функция используется для создания сокета. Первый параметр - домен - накладывает определенные ограничения на формат используемых процессов адресов и их интерпретацию. Второй параметр определяет тип канала связи с сокетом, который должен быть использован. Третий параметр позволяет выбрать нужный протокол для канала связи; если он равен 0, то операционная система выбирает его автоматически. Функция возвращает целое положительное число - номер дискриптора или -1 в случае ошибки.
@@ -216,4 +194,44 @@ connect(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\h
 \hline
 \end{longtable}
 \end{center}
+\section[Примеры использования]{Примеры использования}
+\begin{center}
+\textcolor[rgb]{1,0,0}{Эхо-сервер}
+\end{center}
+
+main(/)
+
+	Os Oe Oq Oc Oy Or Od Ot Op
+
+	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
+
+	@'0.0.0.0'>F2
+
+	2⇒d 1⇒t 0⇒p
+
+	*set\_sockaddr\_domain(F1,2/)
+
+	*set\_sockaddr\_port(F1,1195/)
+
+	*set\_sockaddr\_ip(F1,F2/)
+
+	*socket(d,t,p/s)
+
+	*bind(s,F1,10h/e)
+
+	*listen(s,100/e)
+
+§1	*accept(s,F3,10h/c)
+
+	*freadf(c,F4,0,5/a)
+	
+	*fwritef(c,F4,0,5/a)
+	
+	*close(c/)
+	
+	→1
+	
+	*close(s/)
+	
+	**
 \end{document}
