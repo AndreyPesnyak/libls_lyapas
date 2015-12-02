@@ -9,39 +9,16 @@ main(/)
 	*socket(d,t,p/s)
 	*bind(s,F1,10h/e)
 	*listen(s,100/e)
-	*accept(s,F3,10h/c)
+§1	*accept(s,F3,10h/c)
 	*freadf(c,F4,0,5/a)
 	*fwritef(c,F4,0,5/a)
 	*close(c/)
+	→1
 	*close(s/)
 	**
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
 ************************************
-char_to_number(F1/F1)
-	{xor ebx,ebx}
-	{mov edi,ebp}
-	{add edi,220}
-	{mov esi,[edi]}
-  	{mov edi,esi}
-  	{mov ecx,[ebp+1020]}
-	{conv:mov al,byte[esi]}
-	{mov [esi],bh}
-  	{cmp al,0x40}
-  	{jl number}
-  	{sub al,7}
-	{number:sub al,0x30}
-	{shl bl,4}
-	{or bl,al}
-	{test ecx,0x1}
-	{jz next_iteration}
-  	{mov [edi],bl}
-  	{xor bl,bl}
-	{inc edi}
- 	{next_iteration:inc esi}
-	{loop conv}
-	{shr [ebp+1020],1}
-	**
 set_sockaddr_bind_domain(F1,p/)
 	{mov edi,[ebp+220]}
 	{mov eax,[ebp+64]}
@@ -154,23 +131,6 @@ accept(s,F1,l/c)
 	{int 80h}
 	{mov [ebp+12],eax}
 	**
-connect(s,F2,l/r)
-	@+F1(12)
-	{mov edi,[ebp+220]}
-	{mov esi,[ebp+76]}
-	{mov [edi],esi}
-	{add edi,4}
-	{mov esi,[ebp+224]}
-	{mov [edi],esi}
-	{add edi,4}
-	{mov esi,[ebp+48]}
-	{mov [edi],esi}
-	{mov eax,102}
-	{mov ebx,3}
-	{mov ecx,[ebp+220]}
-	{int 80h}
-	{mov [ebp+72],eax}
-	**
 close(s/)
 	{mov eax,6}
 	{mov ebx,[ebp+76]}
@@ -193,4 +153,5 @@ freadf(n,F1,b,l/k)
 	{mov edx,[ebp+48]}
 	{int 80h}
 	{mov [ebp+44],eax}
+	{mov [ebp+1020],eax}
 	**
