@@ -1,6 +1,6 @@
 main(/)
 	Os Oe Oq Oc Oy Or Od Ot Op
-	@+F1(16) @+F2(16) @+F3(16)
+	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
 	@'0.0.0.0'>F2
 	2⇒d 1⇒t 0⇒p
 	*set_sockaddr_bind_domain(F1,2/)
@@ -9,9 +9,9 @@ main(/)
 	*socket(d,t,p/s)
 	*bind(s,F1,10h/e)
 	*listen(s,100/e)
-	*accept(s,F2,10h/c)
-	*freadf(c,F3,0,5/a)
-	*fwritef(c,F3,0,5/a)
+	*accept(s,F3,10h/c)
+	*freadf(c,F4,0,5/a)
+	*fwritef(c,F4,0,5/a)
 	*close(c/)
 	*close(s/)
 	**
@@ -137,7 +137,7 @@ listen(s,b/e)
 	{mov [ebp+20],eax}
 	**
 accept(s,F1,l/c)
-	@+F2(8)
+	@+F2(12)
 	{mov eax,102}
 	{mov ebx,5}
 	{mov ecx,[ebp+224]}
@@ -148,13 +148,14 @@ accept(s,F1,l/c)
 	{mov edx,[ebp+220]}
 	{mov [edi],edx}
 	{add edi,4}
-	{mov edx,[ebp+48]}
+	{mov edx,ebp}
+	{add edx,48}
 	{mov [edi],edx}
 	{int 80h}
 	{mov [ebp+12],eax}
 	**
 connect(s,F2,l/r)
-	@+F1(16)
+	@+F1(12)
 	{mov edi,[ebp+220]}
 	{mov esi,[ebp+76]}
 	{mov [edi],esi}
