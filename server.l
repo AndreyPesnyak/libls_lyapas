@@ -2,14 +2,12 @@ main(/)
 	Os Oe Oq Oc Oy Or Od Ot Op
 	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
 	@'0.0.0.0'>F2
-	2⇒d 1⇒t 0⇒p
-	*set_sockaddr_domain(F1,2/)
 	*set_sockaddr_port(F1,1195/)
 	*set_sockaddr_ip(F1,F2/)
-	*socket(d,t,p/s)
-	*bind(s,F1,10h/e)
+	*socket(t/s)
+	*bind(s,F1/e)
 	*listen(s,100/e)
-§1	*accept(s,F3,10h/c)
+§1	*accept(s,F3/c)
 	*freadf(c,F4,0,5/a)
 	*fwritef(c,F4,0,5/a)
 	*close(c/)
@@ -19,15 +17,10 @@ main(/)
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
 ************************************
-set_sockaddr_domain(F1,d/)
-	{mov edi,[ebp+220]}
-	{mov eax,[ebp+16]}
-	{mov [edi],ax}
-	{mov al,2}
-	{mov [ebp+1020],al}
-	**
 set_sockaddr_port(F1,p/)
 	{mov edi,[ebp+220]}
+	{mov eax,2}
+	{mov [edi],ax}
 	{add edi,2}
 	{mov eax,[ebp+64]}
 	{ror ax,8}
@@ -65,24 +58,24 @@ set_sockaddr_ip(F1,F2/)
 	{mov al,8}
 	{mov [ebp+1020],al}
 	**
-socket(d,t,p/s)
+socket(t/s)
 	@+F1(12)
 	{mov eax,102}
 	{mov ebx,1}
 	{mov ecx, [ebp+220]}
 	{mov edi,ecx}
-	{mov edx,[ebp+16]}
+	{mov edx,2}
 	{mov [edi],edx}
 	{add edi,4}
-	{mov edx,[ebp+80]}
+	{mov edx,1}
 	{mov [edi],edx}
 	{add edi,4}
-	{mov edx,[ebp+64]}
+	{mov edx,0}
 	{mov [edi],edx}
 	{int 80h}
 	{mov [ebp+76],eax}
 	**
-bind(s,F1,l/e)
+bind(s,F1/e)
 	@+F2(12)
 	{mov eax,102}
 	{mov ebx,2}
@@ -94,7 +87,7 @@ bind(s,F1,l/e)
 	{mov edx,[ebp+220]}
 	{mov [edi],edx}
 	{add edi,4}
-	{mov edx,[ebp+48]}
+	{mov edx,0x10}
 	{mov [edi],edx}
 	{int 80h}
 	{mov [ebp+20],eax}
@@ -113,8 +106,13 @@ listen(s,b/e)
 	{int 80h}
 	{mov [ebp+20],eax}
 	**
-accept(s,F1,l/c)
+accept(s,F1/c)
 	@+F2(12)
+	@+F3(4)
+	{mov ecx,[ebp+228]}
+	{mov edi,ecx}
+	{mov ecx,0x10}
+	{mov [edi],ecx}
 	{mov eax,102}
 	{mov ebx,5}
 	{mov ecx,[ebp+224]}
@@ -126,7 +124,7 @@ accept(s,F1,l/c)
 	{mov [edi],edx}
 	{add edi,4}
 	{mov edx,ebp}
-	{add edx,48}
+	{add edx,228}
 	{mov [edi],edx}
 	{int 80h}
 	{mov [ebp+12],eax}
