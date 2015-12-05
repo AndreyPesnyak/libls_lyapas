@@ -1,13 +1,11 @@
 main(/)
 	Ox Oq Oy Oe Od Ot Op
 	@+F1(16) @+F2(16) @+F3(5) @+F4(5)
-	@'192.168.203.1'>F2
+	@'192.168.0.68'>F2
 	@'echo\n'>F3
-	2⇒d 1⇒t 0⇒p
-	*set_sockaddr_domain(F1,2/)
 	*set_sockaddr_port(F1,1195/)
 	*set_sockaddr_ip(F1,F2/)
-	*socket(d,t,p/x)
+	*socket(1/x)
 	*connect(x,F1,10h/e)
 	*fwritef(x,F3,0,5/a)
 	*freadf(x,F4,0,5/a)
@@ -17,21 +15,16 @@ main(/)
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
 ************************************
-set_sockaddr_domain(F1,d/)
-	{mov edi,[ebp+220]}
-	{mov eax,[ebp+16]}
-	{mov [edi],ax}
-	{mov al,2}
-	{mov [ebp+1020],al}
-	**
 set_sockaddr_port(F1,p/)
 	{mov edi,[ebp+220]}
-	{add edi,2}
-	{mov eax,[ebp+64]}
-	{ror ax,8}
-	{mov [edi],ax}
-	{mov al,4}
-	{mov [ebp+1020],al}
+        {mov eax,2}
+        {mov [edi],ax}
+        {add edi,2}
+        {mov eax,[ebp+64]}
+        {ror ax,8}
+        {mov [edi],ax}
+        {mov al,4}
+        {mov [ebp+1020],al}
 	**
 set_sockaddr_ip(F1,F2/)
 	{xor edi,edi}
@@ -63,23 +56,23 @@ set_sockaddr_ip(F1,F2/)
 	{mov al,8}
 	{mov [ebp+1020],al}
 	**
-socket(d,t,p/s)
+socket(t/s)
 	@+F1(12)
-	{mov eax,102}
-	{mov ebx,1}
-	{mov ecx, [ebp+220]}
-	{mov edi,ecx}
-	{mov edx,[ebp+16]}
-	{mov [edi],edx}
-	{add edi,4}
-	{mov edx,[ebp+80]}
-	{mov [edi],edx}
-	{add edi,4}
-	{mov edx,[ebp+64]}
-	{mov [edi],edx}
-	{int 80h}
-	{mov [ebp+76],eax}
-	**
+        {mov eax,102}
+        {mov ebx,1}
+        {mov ecx, [ebp+220]}
+        {mov edi,ecx}
+        {mov edx,2}
+        {mov [edi],edx}
+        {add edi,4}
+        {mov edx,1}
+        {mov [edi],edx}
+        {add edi,4}
+        {mov edx,0}
+        {mov [edi],edx}
+        {int 80h}
+        {mov [ebp+76],eax}
+        **
 connect(s,F2,l/e)
 	@+F1(16)
 	{mov edi,[ebp+220]}
