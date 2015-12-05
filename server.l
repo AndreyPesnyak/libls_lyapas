@@ -1,5 +1,5 @@
 main(/)
-	Os Oe Oq Oc Oy Or Od Ot Op
+	Os Ot Oe Oc Oa
 	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
 	@'0.0.0.0'>F2
 	*set_sockaddr_port(F1,1195/)

@@ -1,16 +1,16 @@
 main(/)
-	Ox Oq Oy Oe Od Ot Op
+	Os Oa Oe
 	@+F1(16) @+F2(16) @+F3(5) @+F4(5)
 	@'192.168.0.68'>F2
 	@'echo\n'>F3
 	*set_sockaddr_port(F1,1195/)
 	*set_sockaddr_ip(F1,F2/)
-	*socket(1/x)
-	*connect(x,F1,10h/e)
-	*fwritef(x,F3,0,5/a)
-	*freadf(x,F4,0,5/a)
+	*socket(1/s)
+	*connect(s,F1/e)
+	*fwritef(s,F3,0,5/a)
+	*freadf(s,F4,0,5/a)
 	*fwritef(1,F4,0,5/a)
-	*close(x/)
+	*close(s/)
 	**
 ************************************
 *** ФУНКЦИИ СЕТЕВОГО ПРОГРАММРОВАНИЯ
@@ -73,7 +73,7 @@ socket(t/s)
         {int 80h}
         {mov [ebp+76],eax}
         **
-connect(s,F2,l/e)
+connect(s,F2/e)
 	@+F1(16)
 	{mov edi,[ebp+220]}
 	{mov esi,[ebp+76]}
@@ -82,7 +82,7 @@ connect(s,F2,l/e)
 	{mov esi,[ebp+224]}
 	{mov [edi],esi}
 	{add edi,4}
-	{mov esi,[ebp+48]}
+	{mov esi,0x10}
 	{mov [edi],esi}
 	{mov eax,102}
 	{mov ebx,3}

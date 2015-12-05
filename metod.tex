@@ -28,29 +28,7 @@
 \phantomsection
 \label{socket}
 \hspace{\parindent}
-socket(\hyperref[domain]{domain}, \hyperref[type]{type}, \hyperref[protocol]{protocol}/socket) - эта функция используется для создания сокета. Первый параметр - домен - накладывает определенные ограничения на формат используемых процессов адресов и их интерпретацию. Второй параметр определяет тип канала связи с сокетом, который должен быть использован. Третий параметр позволяет выбрать нужный протокол для канала связи; если он равен 0, то операционная система выбирает его автоматически. Функция возвращает целое положительное число - номер дискриптора или -1 в случае ошибки.
-
-\begin{table}[H]
-\caption{\label{domain}Значения domain}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-domain & значение \\
-\hline
-AF\_UNIX, AF\_LOCAL & 1 \\
-AF\_INET & 2 \\
-AF\_INET6 & 10 \\
-AF\_IPX & 4 \\
-AF\_NETLINK & 16 \\
-AF\_X25 & 9 \\
-AF\_AX25 & 3 \\
-AF\_ATMPVC & 8 \\
-AF\_APPLETALK & 5 \\
-AF\_PACKET & 17 \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+socket(\hyperref[type]{t}/s) - эта подпрограмма используется для создания сокета. На вход необходимо передать тип канала связи с сокетом, который должен быть использован. Подпрограмма возвращает целое положительное число - номер дискриптора или -1 в случае ошибки.
 
 \begin{table}[ht]
 \caption{\label{type}Значения type}
@@ -61,53 +39,6 @@ type & значение \\
 \hline
 SOCK\_STREAM & 1 \\
 SOCK\_DGRAM & 2 \\
-SOCK\_SEQPACKET & 5 \\
-SOCK\_RAW & 3 \\
-SOCK\_RDM & 4 \\
-SOCK\_PACKET & 10 \\
-SOCK\_NONBLOCK & 2048 \\
-SOCK\_CLOEXEC & 524288 \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
-\begin{table}[H]
-\caption{\label{protocol}Значения protocol}
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-protocol & значения \\
-\hline
-IPPROTO\_IP & 0 \\
-IPPROTO\_HOPOPTS & 0 \\
-IPPROTO\_ICMP & 1 \\
-IPPROTO\_IGMP & 2 \\
-IPPROTO\_IPIP & 4 \\
-IPPROTO\_TCP & 6 \\
-IPPROTO\_EGP & 8 \\
-IPPROTO\_PUP & 12 \\
-IPPROTO\_UDP & 17 \\
-IPPROTO\_IDP & 22 \\
-IPPROTO\_TP & 29 \\
-IPPROTO\_DCCP & 33 \\
-IPPROTO\_IPV6 & 41 \\
-IPPROTO\_ROUTING & 43 \\
-IPPROTO\_FRAGMENT & 44 \\
-IPPROTO\_RSVP & 46 \\
-IPPROTO\_GRE & 47 \\
-IPPROTO\_ESP & 50 \\
-IPPROTO\_AH & 51 \\
-IPPROTO\_ICMPV6 & 58 \\
-IPPROTO\_NONE & 59 \\
-IPPROTO\_DSTOPTS & 60 \\
-IPPROTO\_MTP & 92 \\
-IPPROTO\_ENCAP & 98 \\
-IPPROTO\_PIM & 103 \\
-IPPROTO\_COMP & 108 \\
-IPPROTO\_SCTP & 132 \\
-IPPROTO\_UDPLITE & 136 \\
-IPPROTO\_RAW & 255 \\
 \hline
 \end{tabular}
 \end{center}
@@ -115,10 +46,10 @@ IPPROTO\_RAW & 255 \\
 
 \phantomsection
 \label{bind}
-bind(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr}, sockaddr\_len/\hyperref[error]{error}) - используется сервером для присваивания сокету имени. До выполнения этой функции сокет недоступен программам-клиентам. Первый аргумент - сокет-дескриптор, который данная функция именует. Второй параметр - указатель на комплекс, описывающий sockaddr. Третий параметр - длина комплекса. В случае успешного выполнения функция возвращает значение равное 0, иначе - код ошибки.
+bind(\hyperref[socket]{s},\hyperref[sockaddr]{F1}/\hyperref[error]{e}) - используется сервером для присваивания сокету имени. До выполнения этой подпрограммы сокет недоступен программам-клиентам. Первый аргумент - сокет-дескриптор. Второй параметр - указатель на комплекс, описывающий sockaddr. В случае успешного выполнения подпрограмма возвращает значение равное 0, иначе - код ошибки.
 
 \begin{table}[H]
-\caption{\label{sockaddr}Комплекс sockaddr}
+\caption{\label{sockaddr}Комплекс F1}
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \hline
@@ -131,32 +62,28 @@ bind(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr}, sockaddr\_len/\hyp
 \end{table}
 
 \phantomsection
-\label{set_sockaddr_domain}
-set\_sockaadr\_domain(\hyperref[sockaddr]{sockaddr},\hyperref[domain]{domain}) - функция, позволяющая заполнить поле комплекса sockaddr значением domain.
-
-\phantomsection
 \label{set_sockaddr_port}
-set\_sockaddr\_port(\hyperref[sockaddr]{sockaddr},port) - функция, позволяющая заполнить поле комплекса sockaddr значением port.
+set\_sockaddr\_port(\hyperref[sockaddr]{F1},p) - подпрограмма, позволяющая заполнить поле комплекса sockaddr значением port.
 
 \phantomsection
 \label{set_sockaddr_ip}
-set\_sockaddr\_ip(\hyperref[sockaddr]{sockaddr},ip) - функция, позволяющая заполнить поле комплекса sockaddr значением, взятым из комплекса ip. В случае, если комплекс заполнен нулями, для установления соединения будут использованы все IP-адреса сервера.
+set\_sockaddr\_ip(\hyperref[sockaddr]{F1},F2) - подпрограмма, позволяющая заполнить поле комплекса sockaddr значением, взятым из комплекса F2, соответствующим IP адресу. В случае, если комплекс заполнен нулями, для установления соединения будут использованы все IP-адреса сервера.
 
 \phantomsection
 \label{listen}
-listen(\hyperref[socket]{socket}, backlog/\hyperref[error]{error}) - используется сервером, чтобы уведомить операционную систему, что он ожидает запросы на установление соединения на данном сокете. Первый аргумент - сокет для прослушивания, второй аргумент - целое положительное число, определяющее как много запросов может быть принято на сокет. В случае успешного выполнения функция возвращает значение равное 0, иначе - код ошибки.
+listen(\hyperref[socket]{s},b/\hyperref[error]{e}) - используется сервером, чтобы уведомить операционную систему, что он ожидает запросы на установление соединения на данном сокете. Первый аргумент - сокет для прослушивания, второй аргумент - целое положительное число, определяющее как много запросов может быть принято на сокет. В случае успешного выполнения подпрограмма возвращает значение равное 0, иначе - код ошибки.
 
 \phantomsection
 \label{accept}
-accept(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\hyperref[socket]{socket}) - используется сервером для принятия соединения на сокет. Сокет должен быть уже слушающим в момент вызова функции. Если сервер устанавливает соединение с клиентом, то функция accept возвращает новый сокет-дескриптор, через который и происходит общение клиента с сервером, в противном случае -1. Пока устанавливается соединение клиента с сервером, функция accept блокирует другие запросы соединения с данным сервером, а после установления связи "прослушивание" запросов возобновляется. Первый аргумент функции - сокет-дескриптор для принятия соединений от клиентов. Второй аргумент - комплекс sockaddr для соответствующего домена. Третий аргумент - длина комплекса sockaddr. Второй и третий аргументы заполняются соответствующими значениями в момент установления соединения клиента с сервером и позволяют серверу точно определить, с каким именно клиентом он общается.
+accept(\hyperref[socket]{s},\hyperref[sockaddr]{F1}/\hyperref[socket]{s}) - используется сервером для принятия соединения на сокет. Сокет должен быть уже слушающим в момент вызова подпрограммы. Если сервер устанавливает соединение с клиентом, то подпрограмма accept возвращает новый сокет-дескриптор, через который и происходит общение клиента с сервером, в противном случае -1. Пока устанавливается соединение клиента с сервером, подпрограмма accept блокирует другие запросы соединения с данным сервером, а после установления связи "прослушивание" запросов возобновляется. Первый аргумент подпрограммы - сокет-дескриптор для принятия соединений от клиентов. Второй аргумент - комплекс F1, для соответствующего домена. Второй аргумент заполняются соответствующими значениями в момент установления соединения клиента с сервером и позволяют серверу точно определить, с каким именно клиентом он общается.
 
 \phantomsection
 \label{connect}
-connect(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\hyperref[error]{error}) - данная функция используется клиентом для установления соединения с сервером. Первый аргумент - сокет клиента, второй - комплекс sockaddr, соответствующий серверу, третий - длина комплекса sockaddr. Если соединение прошло успешно возвращается значение равное нулю, иначе - код ошибки.
+connect(\hyperref[socket]{s},\hyperref[sockaddr]{F1}/\hyperref[error]{e}) - данная подпрограмма используется клиентом для установления соединения с сервером. Первый аргумент - сокет клиента, второй - комплекс F1, соответствующий серверу. Если соединение прошло успешно возвращается значение равное нулю, иначе - код ошибки.
 
 \begin{center}
 \begin{longtable}{|c|c|}
-\caption{\label{error}Значения error}
+\caption{\label{error}Значения e}
 \\ \hline
 Значение & Описание ошибки \\
 \hline
@@ -168,23 +95,19 @@ connect(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\h
 12 & Недостаточно свободного места для создания сокета \\
 13 & Запрещено создание сокета с заданными параметрами \\
 14 & Некорректный логический адрес параметра\\
-20 & Аргумент не является директорией\\
 22 & Некорректное значение аргумента\\
 23 & Переполнение таблицы дескрипторов\\
 24 & Слишком много открытых файлов\\
 30 & Файловая система доступна только на чтение\\
-36 & Комплекс sockaddr слишком длинный\\
-40 & Слишком много символических ссылок \\
+36 & Комплекс F1 слишком длинный\\
 71 & Ошибка протокола\\
-88 & Значение аргумента socket, не является дескриптором\\
+88 & Значение аргумента s, не является дескриптором\\
 91 & Тип сокета не поддерживает протокол,выбранный сервером\\
 93 & Данный тип протокола не поддерживается\\
 95 & Функция не поддерживает данные типы сокетов\\
-97 & Семейство адресов не поддерживается протоколом\\
 98 & Сетевой адрес уже используется\\
 99 & Требуемый сетевой адрес не может быть использован\\
 101 & Сеть недоступна\\
-\hline
 103 & Соединение разорвано\\
 105 & Недостаточно свободного места для создания сокета\\
 106 & Соединение на сокете уже произошло\\
@@ -197,6 +120,7 @@ connect(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\h
 \hline
 \end{longtable}
 \end{center}
+\newpage
 \section[Примеры использования]{Примеры использования}
 \begin{center}
 \textcolor[rgb]{1,0,0}{Эхо-сервер}
@@ -204,27 +128,23 @@ connect(\hyperref[socket]{socket},\hyperref[sockaddr]{sockaddr},sockaddr\_len/\h
 
 main(/)
 
-\ \ \ \ Os Oe Oq Oc Oy Or Od Ot Op
+\ \ \ \ Os Oe Oc Oa
 
 \ \ \ \ @+F1(16) @+F2(16) @+F3(16) @+F4(10)
 
 \ \ \ \ @'0.0.0.0'>F2
 
-\ \ \ \ 2⇒d 1⇒t 0⇒p
-
-\ \ \ \ \hyperref[set_sockaddr_domain]{*set\_sockaddr\_domain}(F1,2/)
-
 \ \ \ \ \hyperref[set_sockaddr_port]{*set\_sockaddr\_port}(F1,1195/)
 
 \ \ \ \ \hyperref[set_sockaddr_ip]{*set\_sockaddr\_ip}(F1,F2/)
 
-\ \ \ \ \hyperref[socket]{*socket}(d,t,p/s)
+\ \ \ \ \hyperref[socket]{*socket}(1/s)
 
-\ \ \ \ \hyperref[bind]{*bind}(s,F1,10h/e)
+\ \ \ \ \hyperref[bind]{*bind}(s,F1/e)
 
 \ \ \ \ \hyperref[listen]{*listen}(s,100/e)
 
-§1 \hyperref[accept]{*accept}(s,F3,10h/c)
+§1 \hyperref[accept]{*accept}(s,F3/c)
 
 \ \ \ \ *freadf(c,F4,0,5/a)	
 
@@ -243,7 +163,7 @@ main(/)
 \end{center}
 main(/)
 
-\ \ \ \ Ox Oq Oy Oe Od Ot Op
+\ \ \ \ Os Oe Oa 
 
 \ \ \ \ @+F1(16) @+F2(16) @+F3(5) @+F4(5)
 
@@ -251,25 +171,21 @@ main(/)
 
 \ \ \ \ @'echo\n'>F3
 
-\ \ \ \ 2⇒d 1⇒t 0⇒p
-
-\ \ \ \ \hyperref[set_sockaddr_domain]{*set\_sockaddr\_domain}(F1,2/)
-
 \ \ \ \ \hyperref[set_sockaddr_port]{*set\_sockaddr\_port}(F1,1195/)
 
 \ \ \ \ \hyperref[set_sockaddr_ip]{*set\_sockaddr\_ip}(F1,F2/)
 
-\ \ \ \ \hyperref[socket]{*socket}(d,t,p/x)
+\ \ \ \ \hyperref[socket]{*socket}(1/s)
 
-\ \ \ \ \hyperref[connect]{*connect}(x,F1,10h/e)
+\ \ \ \ \hyperref[connect]{*connect}(s,F1/e)
 
-\ \ \ \ *fwritef(x,F3,0,5/a)
+\ \ \ \ *fwritef(s,F3,0,5/a)
 
-\ \ \ \ *freadf(x,F4,0,5/a)
+\ \ \ \ *freadf(s,F4,0,5/a)
 
 \ \ \ \ *fwritef(1,F4,0,5/a)
 
-\ \ \ \ *close(x/)
+\ \ \ \ *close(s/)
 
 \ \ \ \ **
 \end{document}
