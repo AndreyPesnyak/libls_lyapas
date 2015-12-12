@@ -42,6 +42,44 @@ set_sockaddr_ip(F1,F2/)
         {mov al,8}
         {mov [ebp+1020],al}
         **
+get_sockaddr_ip(F1,F2/)
+        {xor edi,edi}
+        {xor eax,eax}
+        {xor edx,edx}
+        {mov ebx,10}
+        {mov esi,[ebp+220]}
+        {mov edi,[ebp+224]}
+        {add esi,4}
+        {mov ecx,4}
+        {cycle1:mov al,byte[esi]}
+        {div bl} 
+        {mov dl,ah}
+        {add dl,0x30}
+        {cmp al,0}
+        {je next_byte1}
+        {shl dx,8}
+        {xor ah,ah}
+        {div bl} 
+        {mov dl,ah}
+        {add dl,0x30}
+        {cmp al,0}
+        {je next_byte1}
+        {shl edx,8}
+        {mov dl,al}
+        {add dl,0x30}
+        {next_byte1:mov [edi],dl}
+        {inc edi}
+        {shr edx,8}
+        {cmp dl,0}
+        {jne next_byte1}
+        {mov eax,46}
+        {mov [edi],al}
+        {inc edi}
+        {inc esi}
+        {loop cycle1}
+        {dec edi}
+        {mov [edi],cl}
+        **
 socket(t/s)
         @+F1(12)
         {mov eax,102}
