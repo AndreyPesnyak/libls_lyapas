@@ -1,13 +1,15 @@
 main(/)
-	Os Ot Oe Oc Oa
-	@+F1(16) @+F2(16) @+F3(16) @+F4(10)
+	Os Ot Oe Oc Oa Op
+	@+F1(16) @+F2(16) @+F3(16) @+F4(10) @+F5(16)
 	@'0.0.0.0'>F2
 	*set_sockaddr_port(F1,1195/)
 	*set_sockaddr_ip(F1,F2/)
-	*socket(t/s)
+	*socket(1/s)
 	*bind(s,F1/e)
 	*listen(s,100/e)
 §1	*accept(s,F3/c)
+	*get_sockaddr_ip(F3/F5)
+	*get_sockaddr_port(F3/p)
 	*freadf(c,F4,0,5/a)
 	*fwritef(c,F4,0,5/a)
 	*close(c/)
@@ -57,6 +59,53 @@ set_sockaddr_ip(F1,F2/)
 	{mov [esi],edi}
 	{mov al,8}
 	{mov [ebp+1020],al}
+	**
+get_sockaddr_ip(F1/F2)
+	{xor edi,edi}
+	{xor eax,eax}
+	{xor edx,edx}
+	{mov ebx,10}
+	{mov esi,[ebp+220]}
+	{mov edi,[ebp+224]}
+	{add esi,4}
+	{mov ecx,4}
+	{cycle1:mov al,byte[esi]}
+	{div bl}
+	{mov dl,ah}
+	{add dl,0x30}
+	{cmp al,0}
+	{je next_byte1}
+	{shl dx,8}
+	{xor ah,ah}
+	{div bl}
+	{mov dl,ah}
+	{add dl,0x30}
+	{cmp al,0}
+	{je next_byte1}
+	{shl edx,8}
+	{mov dl,al}
+	{add dl,0x30}
+	{next_byte1:mov [edi],dl}
+	{inc edi}
+	{shr edx,8}
+	{cmp dl,0}
+	{jne next_byte1}
+	{mov eax,46}
+	{mov [edi],al}
+	{inc edi}
+	{inc esi}
+	{loop cycle1}
+	{dec edi}
+	{mov [edi],cl}
+	**
+get_sockaddr_port(F1/p)
+	{mov edx,[ebp+220]}
+	{inc edx}
+	{inc edx}
+	{xor eax,eax}
+	{mov ax,[edx]}
+	{ror ax,8}
+	{mov [ebp+68],eax}
 	**
 socket(t/s)
 	@+F1(12)
