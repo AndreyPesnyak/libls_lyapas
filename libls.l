@@ -121,7 +121,8 @@ bind(s,F1/e)
         {mov edx,0x10}
         {mov [edi],edx}
         {int 80h}
-        {mov [ebp+20],eax}
+	{neg eax}
+	{mov [ebp+20],eax}
         **
 listen(s,b/e)
         @+F1(8)
@@ -135,6 +136,7 @@ listen(s,b/e)
         {mov eax,102}
         {mov ebx,4}
         {int 80h}
+	{neg eax}
         {mov [ebp+20],eax}
         **
 accept(s,F1/c)
@@ -158,6 +160,7 @@ accept(s,F1/c)
         {add edx,228}
         {mov [edi],edx}
         {int 80h}
+	{neg eax}
         {mov [ebp+12],eax}
         **
 connect(s,F2/e)
@@ -175,7 +178,8 @@ connect(s,F2/e)
         {mov ebx,3}
         {mov ecx,[ebp+220]}
         {int 80h}
-        {mov [ebp+20],eax}
+        {neg eax}
+	{mov [ebp+20],eax}
         **
 close(s/)
 	{mov eax,6}
